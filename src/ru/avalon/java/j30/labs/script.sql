@@ -22,7 +22,7 @@ create table userinfo (
                         constraint pk_userinfo primary key (id)
 );
 
-create table user (
+create table users (
       id integer,
       email varchar(255),
       password varchar(255),
@@ -31,7 +31,7 @@ create table user (
                     constraint pk_email primary key (email),
                     constraint uq_user_id unique (id),
                     constraint ck_user_id check ( id < 10000000000 and id > 0),
-                    constraint uq_user_info unique (id),
+                    constraint uq_user_info unique (info),
                     constraint ck_user_info check ( info < 10000000000 and info > 0),
                     constraint fk_user_userinfo_id  foreign key (info)
                                                     references userinfo(id),
@@ -40,16 +40,44 @@ create table user (
                                                 references roles(id)
 );
 
-create table order
+create table orders
 (
       id integer,
-      user integer,
+      customer integer,
       created timestamp,
                     constraint pk_name primary key (id),
                     constraint ck_order_id check ( id < 10000000000 and id > 0),
-                    constraint ck_order_user check ( order.user < 10000000000 and order.user > 0),
-                    constraint fk_order_user_id foreign key (user)
-                                                references user(id)
+                    constraint ck_order_user check ( customer < 10000000000 and customer > 0),
+                    constraint fk_order_user_id foreign key (customer)
+                                                references users(id)
+);
+
+create table supplier (
+      id integer,
+      name varchar(255),
+      address varchar(255) not null,
+      phone varchar(255),
+      representative varchar(255) not null,
+                    constraint pk_supplier_name primary key (name),
+                    constraint uq_supplier_id unique (id),
+                    constraint ck_supplier_id check ( id < 10000000000 and id > 0)
+);
+
+create table product (
+      id integer,
+      code varchar(255),
+      title varchar(255),
+      supplier integer,
+      initial_price double,
+      retail_value double,
+                   constraint pk_product primary key (code),
+                   constraint uq_product_id unique (id),
+                   constraint ck_product_id check ( product < 10000000000 and product > 0),
+                   constraint ck_product_supplier check ( supplier < 10000000000 and supplier > 0),
+                   constraint fk_product_supplier foreign key (supplier)
+                                                  references supplier(id),
+                   constraint ck_product_initial_price check ( initial_price < 10000000000 and initial_price > 0),
+                   constraint ck_product_retail_value check ( retail_value < 10000000000 and retail_value > 0)
 );
 
 create table order2product (
@@ -59,33 +87,11 @@ create table order2product (
                     constraint ck_order2product_order check ( order2product.order < 10000000000 and order2product.order > 0),
                     constraint ck_oorder2product_product check ( product < 10000000000 and product > 0),
                     constraint fk_order2product_order_id  foreign key (order)
-                                                          references order(id)
-/*!!!!*/
+                                                          references orders (id),
+                    constraint fk_order2product_product_id  foreign key (order)
+                                                            references product(id)
 );
 
 
-create table product (
-    id integer,
-    code varchar(255),
-    title varchar(255),
-    supplier integer,
-    initial_price double,
-    retail_value double,
-    constraint pk_product primary key (code),
-    constraint uq_product_id unique (id),
-)
 
-
-
-
-create table supplier (
-      id integer,
-      name varchar(255),
-      address varchar(255) not null,
-      phone varchar(255),
-      representative varchar(255) not null,
-                    constraint pk_name primary key (name),
-                    constraint uq_id unique (id),
-                    constraint ck_supplier_id check ( id < 10000000000 and id > 0)
-);
 
