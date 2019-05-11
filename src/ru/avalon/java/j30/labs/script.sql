@@ -94,72 +94,41 @@ CREATE TABLE order2product (
 
 
 INSERT INTO roles(name)
-VALUES ('admin');
+VALUES  ('admin'),
+        ('director'),
+        ('customer');
 
-INSERT INTO roles(name)
-VALUES ('manager');
+INSERT INTO userinfo(name, surname)
+VALUES  ('Ivan', 'Petrov'),
+        ('Irina', 'Ivanova'),
+        ('Vladimir', 'Sidorov');
 
-INSERT INTO roles(name)
-VALUES ('customer');
+INSERT INTO users(email, password, info, role)
+VALUES ('first@gmail.com', 'first5555', 1, 1),
+       ('second@gmail.com', 'second1276', 2, 2),
+       ('third@gmail.com', 'third9453', 3, 3);
 
+INSERT INTO orders(customer, created)
+VALUES  (1, CURRENT TIMESTAMP),
+        (1, CURRENT TIMESTAMP),
+        (2, CURRENT TIMESTAMP);
 
-    INSERT INTO userinfo(name, surname)
-    VALUES ('Ivan', 'Petrov');
+INSERT INTO supplier(name, address, phone, representative)
+VALUES ('Vzlet', 'SPB, Komsomola 4', '5555512', 'Nosov'),
+       ('Omega', 'SPB, Nevskyi', '1234567', 'Nekrasov'),
+       ('Smart devices', 'SPB, Leninskyi 42', '1238712', 'Sergeev');
 
-    INSERT INTO userinfo(name, surname)
-    VALUES ('Irina', 'Ivanova');
+INSERT INTO product(code, title, supplier, initial_price, retail_value)
+VALUES ('ff12', 'iphone 8', 3, 35000, 45000),
+       ('ff14', 'sony vaio', 1, 50000, 71000),
+       ('gs21', 'mouse smartbuy', 4, 500, 1000);
 
-    INSERT INTO userinfo(name, surname)
-    VALUES ('Vladimir', 'Sidorov');
-
-
-        INSERT INTO users(email, password, info, role)
-        VALUES ('first@gmail.com', 'first5555', 1, 1);
-
-        INSERT INTO users(email, password, info, role)
-        VALUES ('second@gmail.com', 'second1276', 2, 2);
-
-        INSERT INTO users(email, password, info, role)
-        VALUES ('third@gmail.com', 'third9453', 3, 3);
-
-
-            INSERT INTO orders(customer, created)
-            VALUES (1, CURRENT TIMESTAMP);
-
-            INSERT INTO orders(customer, created)
-            VALUES (1, CURRENT TIMESTAMP);
-
-            INSERT INTO orders(customer, created)
-            VALUES (2, CURRENT TIMESTAMP);
+INSERT INTO order2product(order_id, product)
+VALUES (2, 1),
+       (3, 4),
+       (4, 6);
 
 
-                INSERT INTO supplier(name, address, phone, representative)
-                VALUES ('Vzlet', 'SPB, Komsomola 4', '5555512', 'Nosov');
-
-                INSERT INTO supplier(name, address, phone, representative)
-                VALUES ('Omega', 'SPB, Nevskyi', '1234567', 'Nekrasov');
-
-                INSERT INTO supplier(name, address, phone, representative)
-                VALUES ('Smart devices', 'SPB, Leninskyi 42', '1238712', 'Sergeev');
-
-
-                    INSERT INTO product(code, title, supplier, initial_price, retail_value)
-                    VALUES ('ff12', 'iphone 8', 3, 35000, 45000);
-
-                    INSERT INTO product(code, title, supplier, initial_price, retail_value)
-                    VALUES ('ff14', 'sony vaio', 1, 50000, 71000);
-
-                    INSERT INTO product(code, title, supplier, initial_price, retail_value)
-                    VALUES ('gs21', 'mouse smartbuy', 4, 500, 1000);
-
-                        INSERT INTO order2product(order_id, product)
-                        VALUES (2, 1);
-
-                        INSERT INTO order2product(order_id, product)
-                        VALUES (3, 4);
-
-                        INSERT INTO order2product(order_id, product)
-                        VALUES (4, 6);
 
 SELECT *
 FROM roles;
