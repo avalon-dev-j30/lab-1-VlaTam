@@ -8,17 +8,17 @@
 CREATE schema lab1;
 
 CREATE TABLE roles (
-     id integer,
-     name varchar(255),
-               constraint pk_role_name primary key (name),
-               constraint uq_role_id unique (id)
+       id integer,
+       name varchar(255),
+       constraint pk_role_name primary key (name),
+       constraint uq_role_id unique (id)
 );
 
 CREATE TABLE userinfo (
-    id integer,
-    name varchar(255),
-    surname varchar(255),
-              constraint pk_userinfo primary key (id)
+      id integer,
+      name varchar(255),
+      surname varchar(255),
+      constraint pk_userinfo primary key (id)
 );
 
 CREATE TABLE "user" (
@@ -27,16 +27,13 @@ CREATE TABLE "user" (
       password varchar(255) NOT NULL,
       info integer NOT NULL,
       role integer NOT NULL,
-                    constraint pk_email primary key (email),
-                    constraint uq_user_id unique (id),
-                    constraint ck_user_id check ( id < 10000000000 and id > 0),
-                    constraint uq_user_info unique (info),
-                    constraint ck_user_info check ( info < 10000000000 and info > 0),
-                    constraint fk_user_userinfo_id  foreign key (info)
-                                                    references userinfo(id),
-                    constraint ck_user_role check ( role < 10000000000 and role > 0),
-                    constraint fk_user_role_id  foreign key (role)
-                                                references roles(id)
+      constraint pk_email primary key (email),
+      constraint uq_user_id unique (id),
+      constraint uq_user_info unique (info),
+      constraint fk_user_userinfo_id  foreign key (info)
+                                      references userinfo(id),
+      constraint fk_user_role_id  foreign key (role)
+                                  references roles(id)
 );
 
 CREATE TABLE "order"
@@ -44,11 +41,9 @@ CREATE TABLE "order"
       id integer,
       customer integer,
       created timestamp NOT NULL,
-                    constraint pk_name primary key (id),
-                    constraint ck_order_id check ( id < 10000000000 and id > 0),
-                    constraint ck_order_user check ( customer < 10000000000 and customer > 0),
-                    constraint fk_order_user_id foreign key (customer)
-                                                references "user" (id)
+      constraint pk_name primary key (id),
+      constraint fk_order_user_id foreign key (customer)
+                                  references "user" (id)
 );
 
 CREATE TABLE supplier (
@@ -57,38 +52,31 @@ CREATE TABLE supplier (
       address varchar(255),
       phone varchar(255) NOT NULL,
       representative varchar(255),
-                    constraint pk_supplier_name primary key (name),
-                    constraint uq_supplier_id unique (id),
-                    constraint ck_supplier_id check ( id < 10000000000 and id > 0)
+      constraint pk_supplier_name primary key (name),
+      constraint uq_supplier_id unique (id)
 );
 
 CREATE TABLE product (
-      id integer,
-      code varchar(255),
-      title varchar(255) NOT NULL,
-      supplier integer,
-      initial_price double NOT NULL,
-      retail_value double NOT NULL,
-                   constraint pk_product primary key (code),
-                   constraint uq_product_id unique (id),
-                   constraint ck_product_id check ( id < 10000000000 and id > 0),
-                   constraint ck_product_supplier check ( supplier < 10000000000 and supplier > 0),
-                   constraint fk_product_supplier foreign key (supplier)
-                                                  references supplier(id),
-                   constraint ck_product_initial_price check ( initial_price < 10000000000 and initial_price > 0),
-                   constraint ck_product_retail_value check ( retail_value < 10000000000 and retail_value > 0)
+     id integer,
+     code varchar(255),
+     title varchar(255) NOT NULL,
+     supplier integer,
+     initial_price double NOT NULL,
+     retail_value double NOT NULL,
+     constraint pk_product primary key (code),
+     constraint uq_product_id unique (id),
+     constraint fk_product_supplier foreign key (supplier)
+                                    references supplier(id)
 );
 
 CREATE TABLE order2product (
-      "order" integer,
-      product integer,
-                    constraint pk_order2product primary key ("order", product),
-                    constraint ck_order2product_order_id check ( "order" < 10000000000 and "order" > 0),
-                    constraint ck_oorder2product_product check ( product < 10000000000 and product > 0),
-                    constraint fk_order2product_order_id  foreign key ("order")
-                                                          references "order" (id),
-                    constraint fk_order2product_product  foreign key (product)
-                                                            references product(id)
+     "order" integer,
+     product integer,
+     constraint pk_order2product primary key ("order", product),
+     constraint fk_order2product_order_id   foreign key ("order")
+                                            references "order" (id),
+     constraint fk_order2product_product  foreign key (product)
+                                          references product(id)
 );
 
 
@@ -149,4 +137,5 @@ FROM product;
 
 SELECT *
 FROM order2product;
+
 
