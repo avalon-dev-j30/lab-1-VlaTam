@@ -11,8 +11,7 @@ CREATE TABLE roles (
      id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
      name varchar(255),
                constraint pk_role_name primary key (name),
-               constraint uq_role_id unique (id),
-               constraint ck_role_id check ( id < 10000000000 and id > 0)
+               constraint uq_role_id unique (id)
 );
 
 CREATE TABLE userinfo (
