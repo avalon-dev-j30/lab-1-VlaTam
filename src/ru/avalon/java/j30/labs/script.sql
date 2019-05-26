@@ -8,21 +8,21 @@
 CREATE schema lab1;
 
 CREATE TABLE roles (
-     id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
+     id integer,
      name varchar(255),
                constraint pk_role_name primary key (name),
                constraint uq_role_id unique (id)
 );
 
 CREATE TABLE userinfo (
-    id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
-    name varchar(255), /*not null,*/
-    surname varchar(255), /*not null,*/
+    id integer,
+    name varchar(255),
+    surname varchar(255),
               constraint pk_userinfo primary key (id)
 );
 
-CREATE TABLE users (   /*user - зарезервированное слово */
-      id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
+CREATE TABLE "user" (
+      id integer,
       email varchar(255),
       password varchar(255) NOT NULL,
       info integer NOT NULL,
@@ -39,31 +39,31 @@ CREATE TABLE users (   /*user - зарезервированное слово */
                                                 references roles(id)
 );
 
-CREATE TABLE orders   /*order - зарезервированное слово */
+CREATE TABLE "order"
 (
-      id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
-      customer integer,   /*user - зарезервированное слово */
-      created timestamp CONSTRAINT 'DD-MON-YYYY HH24:MI:SS' NOT NULL,
+      id integer,
+      customer integer,
+      created timestamp NOT NULL,
                     constraint pk_name primary key (id),
                     constraint ck_order_id check ( id < 10000000000 and id > 0),
                     constraint ck_order_user check ( customer < 10000000000 and customer > 0),
                     constraint fk_order_user_id foreign key (customer)
-                                                references users(id)
+                                                references "user" (id)
 );
 
 CREATE TABLE supplier (
-      id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
+      id integer,
       name varchar(255),
-      address varchar(255), /*not null,*/
+      address varchar(255),
       phone varchar(255) NOT NULL,
-      representative varchar(255), /*not null,*/
+      representative varchar(255),
                     constraint pk_supplier_name primary key (name),
                     constraint uq_supplier_id unique (id),
                     constraint ck_supplier_id check ( id < 10000000000 and id > 0)
 );
 
 CREATE TABLE product (
-      id integer GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
+      id integer,
       code varchar(255),
       title varchar(255) NOT NULL,
       supplier integer,
@@ -80,52 +80,52 @@ CREATE TABLE product (
 );
 
 CREATE TABLE order2product (
-      order_id integer,   /*order - зарезервированное слово */
+      "order" integer,
       product integer,
-                    constraint pk_order2product primary key (order_id, product),
-                    constraint ck_order2product_order_id check ( order_id < 10000000000 and order_id > 0),
+                    constraint pk_order2product primary key ("order", product),
+                    constraint ck_order2product_order_id check ( "order" < 10000000000 and "order" > 0),
                     constraint ck_oorder2product_product check ( product < 10000000000 and product > 0),
-                    constraint fk_order2product_order_id  foreign key (order_id)
-                                                          references orders (id),
+                    constraint fk_order2product_order_id  foreign key ("order")
+                                                          references "order" (id),
                     constraint fk_order2product_product  foreign key (product)
                                                             references product(id)
 );
 
 
-INSERT INTO roles(name)
-VALUES  ('admin'),
-        ('director'),
-        ('customer');
+INSERT INTO roles(id, name)
+VALUES  (1, 'admin'),
+        (2, 'director'),
+        (3, 'customer');
 
-INSERT INTO userinfo(name, surname)
-VALUES  ('Ivan', 'Petrov'),
-        ('Irina', 'Ivanova'),
-        ('Vladimir', 'Sidorov');
+INSERT INTO userinfo(id, name, surname)
+VALUES  (1, 'Ivan', 'Petrov'),
+        (2, 'Irina', 'Ivanova'),
+        (3, 'Vladimir', 'Sidorov');
 
-INSERT INTO users(email, password, info, role)
-VALUES ('first@gmail.com', 'first5555', 1, 1),
-       ('second@gmail.com', 'second1276', 2, 2),
-       ('third@gmail.com', 'third9453', 3, 3);
+INSERT INTO "user"(id, email, password, info, role)
+VALUES (1, 'first@gmail.com', 'first5555', 1, 1),
+       (2, 'second@gmail.com', 'second1276', 2, 2),
+       (3, 'third@gmail.com', 'third9453', 3, 3);
 
-INSERT INTO orders(customer, created)
-VALUES  (1, CURRENT TIMESTAMP),
-        (1, CURRENT TIMESTAMP),
-        (2, CURRENT TIMESTAMP);
+INSERT INTO "order"(id, customer, created)
+VALUES  (1, 1, CURRENT TIMESTAMP),
+        (2, 1, CURRENT TIMESTAMP),
+        (3, 2, CURRENT TIMESTAMP);
 
-INSERT INTO supplier(name, address, phone, representative)
-VALUES ('Vzlet', 'SPB, Komsomola 4', '5555512', 'Nosov'),
-       ('Omega', 'SPB, Nevskyi', '1234567', 'Nekrasov'),
-       ('Smart devices', 'SPB, Leninskyi 42', '1238712', 'Sergeev');
+INSERT INTO supplier(id, name, address, phone, representative)
+VALUES (1, 'Vzlet', 'SPB, Komsomola 4', '5555512', 'Nosov'),
+       (2, 'Omega', 'SPB, Nevskyi', '1234567', 'Nekrasov'),
+       (3, 'Smart devices', 'SPB, Leninskyi 42', '1238712', 'Sergeev');
 
-INSERT INTO product(code, title, supplier, initial_price, retail_value)
-VALUES ('ff12', 'iphone 8', 3, 35000, 45000),
-       ('ff14', 'sony vaio', 1, 50000, 71000),
-       ('gs21', 'mouse smartbuy', 4, 500, 1000);
+INSERT INTO product(id, code, title, supplier, initial_price, retail_value)
+VALUES (1, 'ff12', 'iphone 8', 3, 35000, 45000),
+       (2, 'ff14', 'sony vaio', 1, 50000, 71000),
+       (3, 'gs21', 'mouse smartbuy', 2, 500, 1000);
 
-INSERT INTO order2product(order_id, product)
-VALUES (2, 1),
-       (3, 4),
-       (4, 6);
+INSERT INTO order2product("order", product)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3);
 
 
 
@@ -136,10 +136,10 @@ SELECT *
 FROM userinfo;
 
 SELECT *
-FROM users;
+FROM "user";
 
 SELECT *
-FROM orders;
+FROM "order";
 
 SELECT *
 FROM supplier;
